@@ -1,6 +1,14 @@
 import productDao from "./dao"
 import { IProduct, ISearchParams, ISearchParamsDAO } from "./types"
 class ProductService{
+    async getProductById(id: string){
+        try{
+            const product = await productDao.getProductById(id)
+            return product
+        }catch(error){
+            throw Error((error as Error).message) 
+        }
+    }
     async getProducts(filters: ISearchParams){
         try {
             const limit = 5
