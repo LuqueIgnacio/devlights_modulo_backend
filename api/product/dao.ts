@@ -2,6 +2,15 @@ import Product from "./model";
 import { IProduct, ISearchParamsDAO } from "./types";
 
 class ProductDao{
+    async getProductById(id: string){
+        try {
+            const product = await Product.findById(id)
+            return product
+        }catch(error){
+            throw Error((error as Error).message)
+        }
+    }
+
     async getProducts(limit: number, filters: ISearchParamsDAO){
         const {name, category, minimumPrice, maximumPrice, order, salerId} = filters
         let hasPriceFilter: boolean = false
