@@ -2,9 +2,6 @@ import { IUser } from "../../types";
 import { userDao } from "./dao";
 import { compare } from "bcrypt";
 import { sign } from "jsonwebtoken";
-import { config } from "dotenv";
-
-config();
 
 const {
   getAllUsers,
