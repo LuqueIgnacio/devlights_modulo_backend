@@ -26,6 +26,11 @@ const productSchema = new Schema({
     type: String,
     default: "",
   },
+  salers_id: {
+    type: Schema.Types.ObjectId,
+    ref: "User",
+    required: true
+  }
 });
 
 const Product = model("Product", productSchema);
