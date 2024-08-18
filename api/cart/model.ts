@@ -1,6 +1,7 @@
 import { Schema, model } from "mongoose";
+import { ICart } from "./type";
 
-const cartModel = new Schema({
+const cartModel = new Schema<ICart>({
   products: [
     {
       product_id: {
@@ -34,5 +35,5 @@ const cartModel = new Schema({
   }
 });
 
-const Cart = model("Cart", cartModel);
+const Cart = model<ICart>("Cart", cartModel);
 export default Cart;

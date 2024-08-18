@@ -26,12 +26,25 @@ class ProductDao{
                     ...(minimumPrice ? {$gte: minimumPrice}: {}), 
                     ...(maximumPrice ? {$lte: maximumPrice} : {} )
                     }} : {}),
-                ...(salerId ? {salerId} : {})
+                ...(salerId ? {salers_id: salerId} : {})
             })
             .sort(order && {price: order})
             .limit(limit)
             .skip((page-1) * limit)
             return products
+        }catch(error){
+            throw Error((error as Error).message)
+        }
+    }
+
+    async getProductsPrice(productsId: string[]){
+        try {
+            const prices = await Product.find({
+                _id: {$in: productsId}
+            },
+                "price"
+            )
+            return prices
         }catch(error){
             throw Error((error as Error).message)
         }

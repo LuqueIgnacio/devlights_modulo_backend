@@ -33,6 +33,15 @@ class ProductService{
         }
     }
 
+    async getProductsPrice(productsId: string[]){
+        try {
+            const prices = await productDao.getProductsPrice(productsId)
+            return prices
+        }catch(error){
+            throw Error((error as Error).message)
+        }
+    }
+
     async createProduct(product: IProduct){
         try {
             const newProduct = await productDao.createProduct(product)
