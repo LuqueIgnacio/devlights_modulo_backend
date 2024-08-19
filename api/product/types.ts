@@ -7,6 +7,15 @@ export interface IProduct {
     category: string;
     image: string;
 }
+
+export interface IEditProduct{
+    name?: string;
+    description?: string;
+    stock?: number;
+    price?: number;
+    category?: string;
+    image?: string;
+}
 type OrderPrice = "lower"|"higher"
 export interface ISearchParams{
     page?: string
