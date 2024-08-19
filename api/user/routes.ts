@@ -3,9 +3,10 @@ import { userController } from "./controller";
 
 const userRouter = express.Router();
 
-const { getUsers, getUser, createUser, loginUser, deleteUser, editUser } = userController;
+const { getUsers, getUser, createUser, loginUser, deleteUser, editUser, getOrdersHistory } = userController;
 
 userRouter.get("/", getUsers);
+userRouter.get("/ordersHistory", getOrdersHistory)
 userRouter.get("/:id", getUser);
 userRouter.post("/register", createUser);
 userRouter.post("/login", loginUser);
