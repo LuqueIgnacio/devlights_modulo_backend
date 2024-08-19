@@ -3,7 +3,7 @@ import { Request, Response } from "express";
 
 class CartController{
     async addProduct(req: Request, res: Response){
-        //Obtener el id del usuario y pasarlo al service
+        //TODO: Obtener el id del usuario y pasarlo al service
         const userId = "66bf6c199d95b5799fd5d6e0"
         try {
             const {productId} = req.body

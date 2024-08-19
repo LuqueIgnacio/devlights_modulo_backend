@@ -10,3 +10,9 @@ export interface IUser {
   role: UserRole;
   avatar: string | undefined;
 }
+
+export interface IUserJWT{
+  userId: string,
+  email: string,
+  role: UserRole
+}

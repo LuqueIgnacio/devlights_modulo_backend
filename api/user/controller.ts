@@ -1,6 +1,8 @@
 import { Request, Response } from "express";
 import { userService } from "./service";
 import User from "./model";
+import orderHistoryService from "../orderHistory/service";
+import decodeJWT from "../helpers/decodeJWT"
 
 const { getUser, getUsers, createUser, loginUser } = userService;
 
@@ -54,6 +56,18 @@ class UserController {
       return res.status(200).json(user);
     } catch (error) {
       return res.status(400).json({ error: "User not found" });
+    }
+  }
+
+  async getOrdersHistory(req: Request, res: Response){
+    const {authtoken} = req.headers
+    if(!authtoken) return res.status(400).json()
+    const user = decodeJWT(authtoken)
+    try {
+      const ordersHistory = await orderHistoryService.getOrdersHistory({user_id: user.userId})
+      return res.status(200).json(ordersHistory);
+    } catch (error) {
+      return res.status(500).json();
     }
   }
 }
