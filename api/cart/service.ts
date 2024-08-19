@@ -1,4 +1,5 @@
 import productService from "../product/service";
+import orderHistoryService from "../orderHistory/service";
 import cartDao from "./dao";
 import { ICart } from "./type";
 import { Types } from "mongoose";
@@ -53,6 +54,22 @@ class CartService{
         try {
             const newCart = await cartDao.createCart(cart)
             return cart
+        }catch(error){
+            throw Error((error as Error).message)
+        }
+    }
+
+    async buyCart(userId: string){
+        try {
+            const cart = await this.getCurrentCart(userId)
+            if(!cart){
+                return null
+            }
+            //Creamos el orderHistory
+            const orderHistory = await orderHistoryService.addNewOrder(userId, cart._id.toString())
+            //Actualizamos el campo expires_at del carrito
+            await cartDao.expireCart(cart)
+            return orderHistory
         }catch(error){
             throw Error((error as Error).message)
         }

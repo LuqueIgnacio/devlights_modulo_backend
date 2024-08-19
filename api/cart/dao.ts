@@ -44,6 +44,15 @@ class CartDao{
             throw Error((error as Error).message)
         }
     }
+
+    async expireCart(cart: ICart){
+        try {
+            const updatedCart = await Cart.findOneAndUpdate({_id: cart._id}, {expires_at: new Date()}, {new: true})
+            return updatedCart
+        }catch(error){
+            throw Error((error as Error).message)
+        }
+    }
 }
 
 const cartDao = new CartDao()

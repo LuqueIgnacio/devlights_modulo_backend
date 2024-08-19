@@ -5,7 +5,7 @@ const orderHistorySchema = new Schema({
     type: Date,
     default: Date.now,
   },
-  user: {
+  user_id: {
     type: Schema.Types.ObjectId,
     ref: "User",
     required: true,
