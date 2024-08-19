@@ -3,6 +3,7 @@ import { userService } from "./service";
 import User from "./model";
 import orderHistoryService from "../orderHistory/service";
 import decodeJWT from "../helpers/decodeJWT"
+import { UserRole } from "./types";
 
 const { getUser, getUsers, createUser, loginUser } = userService;
 
@@ -50,10 +51,11 @@ class UserController {
   }
   async editUser(req: Request, res: Response) {
     try {
-      const user = await User.findByIdAndUpdate(req.params.id, req.body, {
-        new: true,
-      });
-      return res.status(200).json(user);
+      const {authtoken} = req.headers
+      if(!authtoken) return res.status(401).json()
+      const user = decodeJWT(authtoken)
+      const editedUser = await userService.editUser(user.userId, req.body)
+      return res.status(200).json(editedUser);
     } catch (error) {
       return res.status(400).json({ error: "User not found" });
     }
@@ -68,6 +70,20 @@ class UserController {
       return res.status(200).json(ordersHistory);
     } catch (error) {
       return res.status(500).json();
+    }
+  }
+
+  async editRole(req: Request, res: Response){
+    try{
+      const {id} = req.params
+      if(!id) return res.status(404).json()
+      const role = req.body.role as UserRole
+      if(!role) return res.status(400)
+      if(!["admin", "comprador", "vendedor"].includes(role)) return res.status(400).json()
+      const editedUser = await userService.editUserRole(id, role)
+      return res.status(200).json(editedUser)
+    }catch(error){
+      return res.status(500).json(error)
     }
   }
 }

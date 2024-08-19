@@ -3,6 +3,8 @@ import { userDao } from "./dao";
 import { compare } from "bcrypt";
 import { sign } from "jsonwebtoken";
 import { config } from "dotenv";
+import { IUserEdit, UserRole } from "./types";
+import User from "./model";
 
 config();
 
@@ -64,6 +66,29 @@ class UserService {
       return token;
     } catch (error) {
       throw new Error((error as Error).message);
+    }
+  }
+  async editUserRole(userId: string, role: UserRole){
+    try{
+      const editedUser = await User.findByIdAndUpdate(userId, {role: role}, {new: true})
+      return editedUser
+    }catch(error){
+      throw Error((error as Error).message)
+    }
+  }
+
+  async editUser(userId: string, user: IUserEdit){
+    try{
+      const {firts_name, last_name, user_name, avatar} = user
+      const editedUser = await User.findByIdAndUpdate(userId, {
+        ...(firts_name? {firts_name} : {}),
+        ...(last_name? {last_name} : {}),
+        ...(user_name? {username: user_name} : {}),
+        ...(avatar? {avatar} : {})
+      }, {new: true})
+      return editedUser
+    }catch(error){
+      throw Error((error as Error).message)
     }
   }
 }
