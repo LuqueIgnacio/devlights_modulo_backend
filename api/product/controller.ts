@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import productService from "./service";
+import decodeJWT from "../helpers/decodeJWT";
 
 class ProductController{
     async getProduct(req: Request, res: Response){
@@ -29,6 +30,34 @@ class ProductController{
             return res.status(200).json(newProduct)
         }catch(error){
             throw Error((error as Error).message)
+        }
+    }
+
+    async salersEditProduct(req: Request, res: Response){
+        try{
+            const {authtoken} = req.headers
+            if(!authtoken) return res.status(401).json()
+            const user = decodeJWT(authtoken)
+            const {id} = req.params
+            if(!id) return res.status(400).json()
+            const editedProduct = await productService.salersEditProduct(id, user.userId, req.body)
+            return res.status(200).json(editedProduct)
+        }catch(error){
+            return res.status(500).json(error)
+        }
+    }
+
+    async salersDeleteProduct(req: Request, res: Response){
+        try{
+            const {authtoken} = req.headers
+            if(!authtoken) return res.status(401).json()
+            const user = decodeJWT(authtoken)
+            const {id} = req.params
+            if(!id) return res.status(400).json()
+            const editedProduct = await productService.salersEditProduct(id, user.userId, req.body)
+            return res.status(200).json(editedProduct)
+        }catch(error){
+            return res.status(500).json(error)
         }
     }
 }

@@ -1,5 +1,5 @@
 import Product from "./model";
-import { IProduct, ISearchParamsDAO } from "./types";
+import { IEditProduct, IProduct, ISearchParamsDAO } from "./types";
 
 class ProductDao{
     async getProductById(id: string){
@@ -54,6 +54,32 @@ class ProductDao{
         try {
             const newProduct = await Product.create(product)
             return newProduct
+        }catch(error){
+            throw Error((error as Error).message)
+        }
+    }
+
+    async editProduct(id: string, product: IEditProduct){
+        try {
+            const {name, description, price, stock, category, image} = product
+            const editedProduct = await Product.findByIdAndUpdate(id, {
+                ...(name? {name} : {}),
+                ...(description? {description} : {}),
+                ...(price? {price} : {}),
+                ...(stock? {stock} : {}),
+                ...(category? {category} : {}),
+                ...(image? {image} : {}),
+            }, {new: true})
+            return editedProduct
+        }catch(error){
+            throw Error((error as Error).message)
+        }
+    }
+
+    async deleteProduct(id: string){
+        try{
+            const deletedProduct = await Product.findByIdAndDelete(id)
+            return deletedProduct
         }catch(error){
             throw Error((error as Error).message)
         }

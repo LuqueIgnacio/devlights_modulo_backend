@@ -1,5 +1,5 @@
 import productDao from "./dao"
-import { IProduct, ISearchParams, ISearchParamsDAO } from "./types"
+import { IEditProduct, IProduct, ISearchParams, ISearchParamsDAO } from "./types"
 class ProductService{
     async getProductById(id: string){
         try{
@@ -46,6 +46,39 @@ class ProductService{
         try {
             const newProduct = await productDao.createProduct(product)
             return newProduct
+        }catch(error){
+            throw Error((error as Error).message)
+        }
+    }
+
+    async salersEditProduct(id: string, userId: string, product: IEditProduct){
+        try {
+            const searchedProduct = await productDao.getProductById(id)
+            if(searchedProduct?.salers_id.toString() === userId){
+                return this.editProduct(id, product)
+            }
+            return null
+        }catch(error){
+            throw Error((error as Error).message)
+        }
+    }
+
+    async editProduct(id: string, product: IEditProduct){
+        try {
+            const editedProduct = await productDao.editProduct(id, product)
+            return editedProduct
+        }catch(error){
+            throw Error((error as Error).message)
+        }
+    }
+
+    async salersDeleteProduct(id: string, userId: string){
+        try {
+            const searchedProduct = await productDao.getProductById(id)
+            if(searchedProduct?.salers_id.toString() === userId){
+                return await productDao.deleteProduct(id)
+            }
+            return null
         }catch(error){
             throw Error((error as Error).message)
         }
