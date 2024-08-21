@@ -26,6 +26,7 @@ class ProductController{
 
     async createProduct(req: Request, res: Response){
         try{
+            const user = res.locals.user
             const newProduct = await productService.createProduct(req.body) 
             return res.status(200).json(newProduct)
         }catch(error){
@@ -35,9 +36,7 @@ class ProductController{
 
     async salersEditProduct(req: Request, res: Response){
         try{
-            const {authtoken} = req.headers
-            if(!authtoken) return res.status(401).json()
-            const user = decodeJWT(authtoken)
+            const user = res.locals.user
             const {id} = req.params
             if(!id) return res.status(400).json()
             const editedProduct = await productService.salersEditProduct(id, user.userId, req.body)
@@ -49,9 +48,7 @@ class ProductController{
 
     async salersDeleteProduct(req: Request, res: Response){
         try{
-            const {authtoken} = req.headers
-            if(!authtoken) return res.status(401).json()
-            const user = decodeJWT(authtoken)
+            const user = res.locals.user
             const {id} = req.params
             if(!id) return res.status(400).json()
             const editedProduct = await productService.salersEditProduct(id, user.userId, req.body)
