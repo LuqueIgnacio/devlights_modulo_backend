@@ -4,9 +4,7 @@ import { Request, Response } from "express";
 
 class CartController{
     async addProduct(req: Request, res: Response){
-        const {authtoken} = req.headers
-        if(!authtoken) return res.status(401)
-        const {userId} = decodeJWT(authtoken) 
+        const {userId} = res.locals.user
         try {
             const {productId} = req.body
             if(!productId){
@@ -20,9 +18,7 @@ class CartController{
     }
 
     async buyCart(req: Request, res: Response){
-        const {authtoken} = req.headers
-        if(!authtoken) return res.status(401)
-        const {userId} = decodeJWT(authtoken) 
+        const {userId} = res.locals.user
         try{
             const orderHistory = await cartService.buyCart(userId)
             return res.status(200).json(orderHistory)

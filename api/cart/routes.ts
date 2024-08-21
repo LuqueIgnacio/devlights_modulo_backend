@@ -1,9 +1,10 @@
 import express from "express";
 import cartController from "./controller";
+import isAuthenticated from "../middlewares/isAuthenticated"
 
 const cartRouter = express.Router()
 
-cartRouter.post("/addProduct", cartController.addProduct)
-cartRouter.post("/buy", cartController.buyCart)
+cartRouter.post("/addProduct", isAuthenticated, cartController.addProduct)
+cartRouter.post("/buy", isAuthenticated, cartController.buyCart)
 
 export default cartRouter

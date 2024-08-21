@@ -51,9 +51,7 @@ class UserController {
   }
   async editUser(req: Request, res: Response) {
     try {
-      const {authtoken} = req.headers
-      if(!authtoken) return res.status(401).json()
-      const user = decodeJWT(authtoken)
+      const user = res.locals.user
       const editedUser = await userService.editUser(user.userId, req.body)
       return res.status(200).json(editedUser);
     } catch (error) {
@@ -62,9 +60,7 @@ class UserController {
   }
 
   async getOrdersHistory(req: Request, res: Response){
-    const {authtoken} = req.headers
-    if(!authtoken) return res.status(400).json()
-    const user = decodeJWT(authtoken)
+    const user = res.locals.user
     try {
       const ordersHistory = await orderHistoryService.getOrdersHistory({user_id: user.userId})
       return res.status(200).json(ordersHistory);
