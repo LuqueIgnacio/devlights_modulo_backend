@@ -1,7 +1,7 @@
 import { Schema, model } from "mongoose";
 import { ICart } from "./type";
 
-const cartModel = new Schema<ICart>({
+const cartModel = new Schema({
   products: [
     {
       product_id: {
@@ -20,10 +20,6 @@ const cartModel = new Schema<ICart>({
     type: Number,
     required: true,
   },
-  created_at: {
-    type: Date,
-    default: Date.now,
-  },
   expires_at: {
     type: Date,
     default: new Date().setDate(new Date().getDate() + 2),
@@ -31,9 +27,12 @@ const cartModel = new Schema<ICart>({
   user_id: {
     type: Schema.Types.ObjectId,
     ref: "User",
-    required: true
+    required: true,
+    unique: true,
   }
-});
+}, {timestamps: true});
 
-const Cart = model<ICart>("Cart", cartModel);
+cartModel.index({createdAt: 1}, {expireAfterSeconds: 60 * 60 * 24})
+
+const Cart = model("Cart", cartModel);
 export default Cart;

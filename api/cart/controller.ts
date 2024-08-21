@@ -3,14 +3,41 @@ import cartService from "./service";
 import { Request, Response } from "express";
 
 class CartController{
-    async addProduct(req: Request, res: Response){
+
+    async getCart(req: Request, res: Response){
         const {userId} = res.locals.user
         try {
-            const {productId} = req.body
-            if(!productId){
-                return res.status(404).json({})
-            }
-            const cart = await cartService.addProducts(userId, productId)
+            const cart = await cartService.getUserCart(userId)
+            return res.status(200).json(cart)
+        }catch(error){
+            return res.status(500).json()
+        }
+    }
+
+    async addCart(req: Request, res: Response){
+        const {userId} = res.locals.user
+        try {
+            const cart = await cartService.addCart(userId, req.body)
+            return res.status(200).json(cart)
+        }catch(error){
+            return res.status(500).json()
+        }
+    }
+
+    async updateCart(req: Request, res: Response){
+        const {userId} = res.locals.user
+        try {
+            const cart = await cartService.updateCart(userId, req.body)
+            return res.status(200).json(cart)
+        }catch(error){
+            return res.status(500).json()
+        }
+    }
+
+    async deleteCart(req: Request, res: Response){
+        const {userId} = res.locals.user
+        try {
+            const cart = await cartService.deleteCart(userId)
             return res.status(200).json(cart)
         }catch(error){
             return res.status(500).json()

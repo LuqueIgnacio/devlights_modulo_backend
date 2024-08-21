@@ -6,12 +6,9 @@ export interface ICartProduct{
 }
 
 export interface ICart{
-    _id?: Types.ObjectId, 
     products: ICartProduct[],
     total_price: number,
-    created_at?: Date,
-    expires_at?: Date,
-    user_id: Types.ObjectId,
+    user_id?: string
 }
 
 export interface ISearchParams{
