@@ -4,7 +4,10 @@ import isAuthenticated from "../middlewares/isAuthenticated"
 
 const cartRouter = express.Router()
 
-cartRouter.post("/addProduct", isAuthenticated, cartController.addProduct)
+cartRouter.get("/getCart", isAuthenticated, cartController.getCart)
+cartRouter.post("/addCart", isAuthenticated, cartController.addCart)
+cartRouter.put("/updateCart", isAuthenticated, cartController.updateCart)
+cartRouter.delete("/deleteCart", isAuthenticated, cartController.deleteCart)
 cartRouter.post("/buy", isAuthenticated, cartController.buyCart)
 
 export default cartRouter

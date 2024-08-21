@@ -15,11 +15,10 @@ class CartDao{
         }
     }
 
-    async getCurrentCart(user_id: string){
+    async getUserCart(user_id: string){
         try {
-            const cart = Cart.findOne({
+            const cart = await Cart.findOne({
                 user_id: user_id,
-                expires_at: {$gt: new Date()}
             })
             return cart
         }catch(error){
@@ -27,7 +26,7 @@ class CartDao{
         }
     }
 
-    async createCart(cart: ICart){
+    async addCart(cart: ICart){
         try {
             const newCart = await Cart.create(cart)
             return newCart
@@ -36,19 +35,19 @@ class CartDao{
         }
     }
 
-    async updateProducts(cart: ICart){
+    async updateCart(cart: ICart){
         try {
-            const updatedCart = await Cart.findOneAndUpdate({_id: cart._id}, {products: cart.products, total_price: cart.total_price}, {new: true})
+            const updatedCart = await Cart.findOneAndUpdate({user_id: cart.user_id}, cart, {new: true})
             return updatedCart
         }catch(error){
             throw Error((error as Error).message)
         }
     }
 
-    async expireCart(cart: ICart){
+    async deleteCart(userId: string){
         try {
-            const updatedCart = await Cart.findOneAndUpdate({_id: cart._id}, {expires_at: new Date()}, {new: true})
-            return updatedCart
+            const deletedCart = await Cart.findOneAndDelete({user_id: userId})
+            return deletedCart
         }catch(error){
             throw Error((error as Error).message)
         }
