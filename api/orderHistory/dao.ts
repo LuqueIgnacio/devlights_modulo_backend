@@ -1,27 +1,13 @@
 import OrderHistory from "./model";
-import { ISearchParams } from "./types";
+import { IOrder, ISearchParams } from "./types";
 
 class OrderHistoryDao{
     private limit = 10
 
-    private async createOrderHistory(userId: string, cartId: string){
+    async addNewOrder(order: IOrder, userId: string){
         try{
-            const newOrderHistory = await OrderHistory.create({user_id: userId, carts: [{cart: cartId}]})
-            return newOrderHistory
-        }catch(error){
-            throw Error((error as Error).message)
-        }
-    }
-
-    async addNewOrder(userId: string, cartId: string){
-        try{
-            const orderHistory = await OrderHistory.findOne({user_id: userId})
-            if(orderHistory){
-                orderHistory.carts.push({cart: cartId})
-                orderHistory.save()
-                return orderHistory
-            }
-            return await this.createOrderHistory(userId, cartId)
+            const orderHistory = await OrderHistory.create({...order, user_id: userId})
+            return orderHistory
         }catch(error){
             throw Error((error as Error).message)
         }

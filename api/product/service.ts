@@ -9,6 +9,16 @@ class ProductService{
             throw Error((error as Error).message) 
         }
     }
+
+    async getProductsByIds(ids: string[]){
+        try{
+            const products = await productDao.getProductsByIds(ids)
+            return products
+        }catch(error){
+            throw Error((error as Error).message) 
+        }
+    }
+
     async getProducts(filters: ISearchParams){
         try {
             const limit = 5
@@ -67,6 +77,15 @@ class ProductService{
         try {
             const editedProduct = await productDao.editProduct(id, product)
             return editedProduct
+        }catch(error){
+            throw Error((error as Error).message)
+        }
+    }
+
+    async editProducts(ids: string[], products: IEditProduct[]){
+        try {
+            const editedProducts = await productDao.editProducts(ids, products)
+            return editedProducts
         }catch(error){
             throw Error((error as Error).message)
         }

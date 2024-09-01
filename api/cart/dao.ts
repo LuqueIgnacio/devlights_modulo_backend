@@ -1,6 +1,5 @@
-import { ObjectId } from "mongoose";
 import Cart from "./model";
-import { ICart, ICartProduct, ISearchParams } from "./type";
+import { ICart, ISearchParams } from "./types";
 
 class CartDao{
     async getCarts(limit: number, filters: ISearchParams){
