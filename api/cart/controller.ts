@@ -44,15 +44,6 @@ class CartController{
         }
     }
 
-    async buyCart(req: Request, res: Response){
-        const {userId} = res.locals.user
-        try{
-            const orderHistory = await cartService.buyCart(userId)
-            return res.status(200).json(orderHistory)
-        }catch(error){
-            return res.status(500).json()
-        }
-    }
 }
 
 const cartController = new CartController()

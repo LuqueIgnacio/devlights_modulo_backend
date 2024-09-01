@@ -1,6 +1,6 @@
 import Product from "./model";
 import { IEditProduct, IProduct, ISearchParamsDAO } from "./types";
-
+import { Types } from "mongoose";
 class ProductDao{
     async getProductById(id: string){
         try {
@@ -76,10 +76,47 @@ class ProductDao{
         }
     }
 
+    async editProducts(ids: string[], products: IEditProduct[]){
+        try {
+            const updates = products.map((product, index) => {
+                const {name, description, price, stock, category, image} = product
+                return( 
+                    {
+                        updateOne:{
+                            filter: { _id: ids[index] },
+                            update: {
+                                ...(name? {name} : {}),
+                                ...(description? {description} : {}),
+                                ...(price? {price} : {}),
+                                ...(stock? {stock} : {}),
+                                ...(category? {category} : {}),
+                                ...(image? {image} : {}),
+                            }
+                        }
+                    })
+            })
+           
+            const response = await Product.bulkWrite(updates)
+            return response
+        }catch(error){
+            throw Error((error as Error).message)
+        }
+    }
+    
+
     async deleteProduct(id: string){
         try{
             const deletedProduct = await Product.findByIdAndDelete(id)
             return deletedProduct
+        }catch(error){
+            throw Error((error as Error).message)
+        }
+    }
+
+    async getProductsByIds(ids: string[]){
+        try{
+            const products = await Product.find({_id: {$in: ids.map(id => new Types.ObjectId(id))}}).sort({_id: 1})
+            return products
         }catch(error){
             throw Error((error as Error).message)
         }

@@ -1,4 +1,4 @@
-import { ObjectId, Types } from "mongoose"
+import {Types } from "mongoose"
 
 export interface ICartProduct{
     product_id: Types.ObjectId,

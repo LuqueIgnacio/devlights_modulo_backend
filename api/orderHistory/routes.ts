@@ -7,5 +7,6 @@ orderHistoryRouter.use(isAdmin)
 
 orderHistoryRouter.get("/", ()=>{})
 orderHistoryRouter.get("/user/:userId", orderHistoryController.getOrderHistoryByUserId)
+orderHistoryRouter.post("/addOrder", orderHistoryController.addOrder)
 
 export default orderHistoryRouter

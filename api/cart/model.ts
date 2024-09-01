@@ -1,5 +1,5 @@
 import { Schema, model } from "mongoose";
-import { ICart } from "./type";
+import { ICart } from "./types";
 
 const cartModel = new Schema({
   products: [
