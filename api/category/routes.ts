@@ -1,8 +1,12 @@
-import express from "express";
-import categoriesController from "./controller";
+import express from "express"
+import categoryController from "./controller"
 
-const categoriesRouter = express.Router();
+const categoryRouter = express.Router()
+const {getAll, create, update, getCategories} = categoryController
 
-categoriesRouter.get("/", categoriesController.getCategories);
+categoryRouter.get("/", getCategories)
+categoryRouter.post("/", create)
+categoryRouter.put("/:id", update)
 
-export default categoriesRouter;
+export default categoryRouter
+
