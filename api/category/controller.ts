@@ -2,6 +2,11 @@ import { Request, Response } from "express";
 import categoryService from "./service";
 
 class CategoryController{
+  
+    async getCategories(req: Request, res: Response){
+        const categories = await Category.find()
+        return res.status(200).json(categories)
+    }
     async getAll(req: Request, res: Response){
         try{
             const categories = await categoryService.getAll(req.body)
@@ -34,3 +39,4 @@ class CategoryController{
 
 const categoryController = new CategoryController()
 export default categoryController
+
